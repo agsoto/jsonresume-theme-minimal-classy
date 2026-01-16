@@ -3,16 +3,22 @@
   "meta": {
     "language": "en",
     "selfContainedImages": true,
-    "hideName": false
+    "hideName": true,
+    "logo": "./test/logo.svg",
+    "labelUnderLogo": true,
+    "disableImageStyling": false,
+    "customStyles": ".label-text { letter-spacing: 5px; margin: -10px 0 0 0; }"
   },
   "basics": {
-    "name": "John Dos",
-    "label": "Software Master",
+    "name": "John Doe",
+    "label": "Software Engineer (Mostly Harmless)",
+    "image": "./test/profile-picture.jpeg",
     "email": "john.doe@nullpointer.dev",
     "phone": "+1 (415) 404-1337",
     "url": "https://johndoe.dev",
     "summary": "Software engineer who ships reliable systems, trims latency, and writes tests because future-me has already suffered enough. I like clean APIs, boring infrastructure, and documentation that doesn't gaslight people. If it's slow, flaky, or unclear, I'll probably fix it (and add a postmortem template while I'm at it).",
     "location": {
+      "city": "San Francisco",
       "countryCode": "US",
       "region": "California"
     },
