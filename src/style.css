@@ -1,158 +1,428 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  --fg-color: black;
-  --bg-color: #fff;
-  --header-h1-fg-color: #fff;
-  --header-h2-fg-color: #f3f3f3;
-  --header-bg-color: #1866c3;
-  --link-color: #3061a5;
-  --separator-color: #e2e2e2;
-
+  font-family: 'Roboto', sans-serif;
+  color: #000;
+  background: #fff;
   margin: 0;
-  color: var(--fg-color);
-  background: var(--bg-color);
-  font-size: 15px;
-  font-family: Roboto, 'Helvetica Neue', 'Arial Nova', 'Liberation Sans', Arial, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    --fg-color: #eee;
-    --bg-color: #2c2c2c;
-    --header-h1-fg-color: #ddd;
-    --header-h2-fg-color: #eee;
-    --header-bg-color: #1b1b1b;
-    --link-color: #70a1e5;
-    --separator-color: #939393
-  }
-}
-
-em {
-  color: #999;
+  padding: 40px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 a {
-  color: var(--link-color);
+  color: inherit;
   text-decoration: none;
 }
 
-section {
-  margin-bottom: 2em;
-}
-
-.item {
-  break-inside: avoid;
-}
-
-header {
-  background: var(--header-bg-color);
-  padding: 50px;
-  margin-bottom: 50px;
-}
-
-header h1 {
-  color: var(--header-h1-fg-color);
-  max-width: 772px;
-  margin: 0 auto;
-}
-
-header h2 {
-  color: var(--header-h2-fg-color);
-  font-size: 1em;
-  max-width: 772px;
-  margin: 0 auto;
-}
-
 .container {
-  max-width: 772px;
-  padding: 0 50px;
+  max-width: 800px; /* Reduced from 960px */
   margin: 0 auto;
 }
 
-#basics {
-  margin-bottom: 10px;
-  border-bottom: 1px var(--separator-color) solid;
-}
-
-.split {
+/* Header */
+.header-row {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 10px 0 20px 0;
   flex-wrap: wrap;
 }
 
-.split strong {
-  margin-right: 2em;
+.header-left {
+  flex: 1;
 }
 
-.project_entity,
-.project_date,
-.project_website {
-  margin-bottom: 10px;
-  width: 30%;
+.name-box {
+  background: #000;
+  color: #fff;
+  display: inline;
+  padding: 5px 15px; 
+  margin: 0;
+  font-size: 2em; 
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-.website,
-.email,
-.phone,
-#profiles .item,
-#languages .item,
-#interests .item,
-#skills .item {
-  width: 50%;
+.label-text {
+  font-weight: 300;
+  font-size: 1.8em;
+  margin: 5px 0 0 0; /* Reduced margin */
+  color: #000;
 }
 
-.username {
-  margin-top: .5em;
+.header-right {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  text-align: left;
+  margin: auto;
+  min-width: 300px;
+  padding-left: 20px;
 }
 
-.work_date,
-.work_position,
-.work_website,
-.institution,
-.study_date,
-.qualification {
-  margin-bottom: 10px;
-  width: 30%;
+.contact-item {
+  display: flex;
+  align-items: flex-start;
 }
 
-.courses,
-#references,
-#interests {
-  clear: both;
+.contact-item .icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  text-align: center;
+  margin-right: 10px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-top: -2px; /* Optical alignment with text line-height */
 }
 
-.dissertation {
-  margin-top: 10px;
+/* Two-column Content Row (About + Skills) */
+.content-row {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+  align-items: flex-start;
 }
 
-#work,
-#volunteer,
-#projects {
-  padding-bottom: 5px;
-  border-bottom: 1px var(--separator-color) solid;
-}
-
-#work .item,
-#volunteer .item,
-#projects .item {
-  margin: 25px 0;
+#about {
+  flex: 5; /* Takes up slightly less space than half, or adjust based on text */
+  margin-bottom: 0;
 }
 
 #skills {
-  margin-bottom: 10px;
-  border-bottom: 1px var(--separator-color) solid;
-  padding-bottom: 5px;
-  overflow: hidden;
+  flex: 4;
+  margin-bottom: 0;
+  /* Align skills to start from top */
+  margin-top: 0;
+  align-self: center;
 }
 
-#skills .item,
-#languages .item,
-#interests .item {
-  margin: 0 0 25px 0;
+img.profile {
+  max-width: 180px;
+  border-radius: 50%;
+  mask-image: radial-gradient(circle at center,#000 5%,rgba(0,0,0,0) 60%);
+  filter: grayscale() contrast(2);
+  margin: -5px;
 }
 
-@page {
-  margin: 2em 0 0 0;
+.logo-container {
+  text-align: center;
 }
 
-@page :first {
+.logo {
+  max-width: 350px;
+}	
+
+/* Sections */
+section {
+  margin-bottom: 15px;
+}
+
+.section-title {
+  background: #000;
+  color: #fff;
+  display: inline-block;
+  padding: 3px 10px;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1em;
+}
+
+/* About / Summary */
+.summary-text p {
   margin: 0;
+  max-width: 700px;
+}
+
+/* Skills */
+.skills-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* gap: 5px 40px; */
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+}
+
+.skill-name {
+  color: #fff;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: right;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.skill-name span{
+  background: #000;
+  padding: 3px 10px; /* Reduced padding */
+}
+
+.skill-container {
+  margin-bottom: 5px;
+}
+
+.skill-keywords {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
+  margin-left: 130px; /* Align with bar (120px min-width + 10px margin) */
+}
+
+.skill-bar-bg {
+  flex-grow: 1;
+  background: transparent;
+  height: 18px;
+}
+
+.skill-bar-fill {
+  background: #0000003b;
+  height: 100%;
+}
+
+/* Interests (Circles) */
+.interests-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.interest-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.interest-name {
+  margin-bottom: 5px;
+  font-size: 1em;
+}
+
+.interest-circle {
+  width: calc(var(--interest-size, 10) * 4px);
+  height: calc(var(--interest-size, 10) * 4px);
+  background: #000;
+  border-radius: 50%;
+}
+
+/* Experience / Work */
+.job-item {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.job-date {
+  width: 160px;
+  flex-shrink: 0;
+  padding-right: 20px;
+  font-weight: 300;
+  padding-top: 0;
+  font-size: 1em;
+}
+
+.job-content {
+  flex-grow: 1;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+.job-title {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.job-company {
+  font-weight: 700;
+  text-align: right;
+  font-size: 1em;
+}
+
+.job-summary p {
+  margin: 0 0 2px 0;
+}
+
+.job-highlights {
+  padding-left: 20px;
+  margin: 0 0 2px 0;
+}
+
+/* Tech Stack */
+.tech-stack {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9em;
+  margin-top: 0;
+  color: #000;
+}
+
+.tech-item {
+  display: inline-block;
+}
+
+/* Languages */
+.languages-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 10px 0;
+}
+
+.language-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.language-name {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.language-fluency {
+  font-weight: 300;
+  font-size: 0.9em;
+}
+
+/* References */
+blockquote {
+  margin: 0 0 10px 0;
+  font-style: italic;
+}
+
+cite {
+  display: block;
+  text-align: right;
+  font-weight: 700;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
+  .content-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  #about, #skills {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  
+  .header-right {
+    margin: auto;
+    width: 100%;
+    padding-left: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .skills-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .job-item {
+    flex-direction: column;
+  }
+
+  .job-date {
+    width: 100%;
+    margin-bottom: 5px;
+    padding-right: 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    padding: 0;
+    /* Ensure background graphics are printed if possible, though browser dependent */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .container {
+    /* Maintain the screen width to keep element positions consistent */
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+  }
+
+  .header-row {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    margin: 10px 0 20px 0;
+  }
+
+  .header-left, .header-right {
+    min-width: 0; /* Allow shrinking */
+  }
+
+  .header-right {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .skills-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+
+  .job-item {
+    flex-direction: row !important;
+  }
+
+  .job-date {
+    width: 160px;
+    margin-bottom: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .job-item {
+    break-inside: avoid;
+  }
+
+  .skill-item,
+  .interest-item,
+  .language-item {
+    break-inside: avoid;
+  }
+
+  section {
+    break-inside: auto;
+  }
+  
+  .section-title {
+    break-after: avoid;
+    page-break-after: avoid;
+    display: block;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
 }

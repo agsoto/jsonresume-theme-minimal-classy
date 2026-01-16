@@ -1,45 +1,17 @@
-import fs from 'node:fs/promises';
 import Handlebars from 'handlebars';
 import { minify } from 'html-minifier';
 import { marked } from 'marked';
 import { Messages } from './i18n/messages.js';
+
+import template from './resume.handlebars?raw';
+import css from './style.css?raw';
 
 /** @type {Intl.DateTimeFormatOptions} */
 const LONG_DATE_FORMAT = { month: 'short', year: 'numeric' };
 /** @type {Intl.DateTimeFormatOptions} */
 const SHORT_DATE_FORMAT = { year: 'numeric' };
 
-/**
- * Custom renderer for marked, namely to disable unwanted features. We only want
- * to allow basic inline elements, like links, bold, or inline-code.
- *
- * @type {import('marked').RendererObject}
- */
-const renderer = {
-  heading(heading) {
-    return heading.text;
-  },
-  html(html) {
-    return html.text;
-  },
-  hr() {
-    return '';
-  },
-  list(list) {
-    return list.raw;
-  },
-  listitem(text) {
-    return text.text;
-  },
-  br() {
-    return '';
-  },
-  paragraph(text) {
-    return text.text;
-  }
-}
 
-marked.use({ renderer });
 
 /**
  * Plugins to enable to minify HTML after generating from the template.
@@ -56,7 +28,7 @@ const minifyOptions = {
 };
 
 Handlebars.registerHelper('markdown', /** @param {string} body */(body) => {
-  return marked.parseInline(body);
+  return marked.parse(body);
 });
 
 Handlebars.registerHelper('link', /** @param {string} body */(body) => {
@@ -65,125 +37,12 @@ Handlebars.registerHelper('link', /** @param {string} body */(body) => {
   return `<a href="${body}">${host}</a>`;
 });
 
-/**
- * Many users still have JSON Resumes written against old versions of the
- * schema. We detect this and upgrade them to the latest version behind the
- * scenes.
- *
- * Writes to the object directly.
- *
- * @param {any} resume
- * @returns {boolean}
- *   If the JSON Resume was modified. (i.e. was using outdated property names)
- *
- * @see https://github.com/jsonresume/resume-schema/releases/tag/v0.0.17
- * @see https://github.com/jsonresume/resume-schema/releases/tag/v0.0.12
- */
-function upgradeOutdatedResume(resume) {
-  let upgraded = false;
-
-  if (resume.bio && !resume.basics) {
-    resume.basics = resume.bio;
-    upgraded = true;
-  }
-
-  if ((resume.basics?.firstName || resume.basics?.lastName) && !resume.basics.name) {
-    const names = [];
-
-    if (resume.basics.firstName) {
-      names.push(resume.basics.firstName);
-    }
-
-    if (resume.basics.lastName) {
-      names.push(resume.basics.lastName);
-    }
-
-    resume.basics.name = names.join(' ');
-    upgraded = true;
-  }
-
-  if (resume.basics?.picture && !resume.basics.image) {
-    resume.basics.image = resume.basics.picture;
-    upgraded = true;
-  }
-
-  if (resume.basics?.website && !resume.basics.url) {
-    resume.basics.url = resume.basics.website;
-    upgraded = true;
-  }
-
-  if (resume.basics?.state && !resume.basics?.region) {
-    resume.basics.region = resume.basics.state;
-    upgraded = true;
-  }
-
-  if (Array.isArray(resume.work)) {
-    for (const work of resume.work) {
-      if (work?.company && !work.name) {
-        work.name = work.company;
-        upgraded = true;
-      }
-
-      if (work?.website && !work.url) {
-        work.url = work.website;
-        upgraded = true;
-      }
-    }
-  }
-
-  if (Array.isArray(resume.volunteer)) {
-    for (const volunteer of resume.volunteer) {
-      if (volunteer?.website && !volunteer.url) {
-        volunteer.url = volunteer.website;
-        upgraded = true;
-      }
-    }
-  }
-
-  if (Array.isArray(resume.publications)) {
-    for (const publication of resume.publications) {
-      if (publication?.website && !publication.url) {
-        publication.url = publication.website;
-        upgraded = true;
-      }
-    }
-  }
-
-  if (resume.hobbies && !resume.interests) {
-    resume.interests = resume.hobbies;
-    upgraded = true;
-  }
-
-  if (Array.isArray(resume.languages)) {
-    for (const language of resume.languages) {
-      if (language?.name && !language.language) {
-        language.language = language.name;
-        upgraded = true;
-      }
-
-      if (language?.level && !language.fluency) {
-        language.fluency = language.level;
-        upgraded = true;
-      }
-    }
-  }
-
-  return upgraded;
-}
 
 /**
  * @param {any} resume
  * @returns {Promise<string>}
  */
 export async function render(resume) {
-  const loading = Promise.all([
-    fs.readFile(import.meta.dirname + '/style.css', 'utf-8'),
-    fs.readFile(import.meta.dirname + '/resume.handlebars', 'utf-8'),
-  ]);
-
-  if (upgradeOutdatedResume(resume)) {
-    console.warn('⚠️  Resume is written against an outdated version of the JSON Resume schema.\n⚠️  This will still work, but you should consider updating your resume.\n⚠️  See: https://jsonresume.org/schema');
-  }
 
   const locale = resume.meta?.language || 'en-US';
   const messages = await new Messages(locale, 'en').load();
@@ -207,48 +66,115 @@ export async function render(resume) {
     return `<time datetime="${datetime}">${localeString}</time>`;
   });
 
-  /** @type {Record<string, unknown>} */
-  resume.custom = {};
-
-  if (Array.isArray(resume.basics?.profiles)) {
-    const { profiles } = resume.basics;
-    const xTwitter = profiles.find((profile) => {
-      const name = profile.network.toLowerCase();
-      return name === 'x' || name === 'twitter';
-    });
-
-    if (xTwitter) {
-      let { username, url } = xTwitter;
-
-      if (!username && url) {
-        const match = url.match(/^https?:\/\/.+?\/(\w{1,15})/);
-
-        if (match.length == 2) {
-          username = match[1];
-        }
-      }
-
-      if (username && !username.startsWith('@')) {
-        username = `@${username}`;
-      }
-
-      resume.custom.xTwitterHandle = username;
-    }
-  }
-
   if (resume.basics?.image) {
-    const { image } = resume.basics;
-
-    if (image.match(/^https?:\/\//)) {
-      resume.custom.ogImage = image;
+    if (resume.basics.image.match(/^https?:\/\//)) {
+      resume.custom = resume.custom || {};
+      resume.custom.ogImage = resume.basics.image;
     }
+    resume.basics.image = await resolveImage(resume.basics.image, resume.meta?.selfContainedImages);
   }
 
-  const [css, template] = await loading;
+  if (resume.meta?.logo) {
+    resume.meta.logo = await resolveImage(resume.meta.logo, resume.meta?.selfContainedImages);
+  }
+  
+
   const html = Handlebars.compile(template)({
     css,
     resume
   });
 
   return minify(html, minifyOptions);
+}
+
+/**
+ * Resolve an image path or URL to a base64 string or return as is.
+ * @param {string} image
+ * @param {boolean} [selfContained]
+ * @returns {Promise<string>}
+ */
+async function resolveImage(image, selfContained) {
+  // Handle base64 (no processing needed)
+  if (image.startsWith('data:')) {
+    return image;
+  }
+
+  // Handle Web URL
+  if (image.match(/^https?:\/\//)) {
+    if (selfContained) {
+      try {
+        const response = await fetch(image);
+        if (response.ok) {
+          const arrayBuffer = await response.arrayBuffer();
+          const contentType = response.headers.get('content-type') || 'image/jpeg';
+          const base64 = await arrayBufferToBase64(arrayBuffer);
+          return `data:${contentType};base64,${base64}`;
+        }
+      } catch (error) {
+        console.warn('Failed to download image for self-contained build:', error);
+      }
+    }
+    return image;
+  }
+
+  // Handle Local Path (Relative or Absolute)
+  try {
+    // Dynamically import fs/path to avoid breaking non-Node environments
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+
+    // Resolve path relative to current working directory
+    const filePath = path.resolve(process.cwd(), image);
+
+    if (fs.existsSync(filePath)) {
+      const fileBuffer = fs.readFileSync(filePath);
+      // Simple mime type detection
+      const ext = path.extname(filePath).toLowerCase();
+      const mimeTypes = {
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.gif': 'image/gif',
+        '.svg': 'image/svg+xml',
+        '.webp': 'image/webp'
+      };
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+      // fs.readFileSync returns a Buffer in Node, so we can use toString('base64')
+      return `data:${contentType};base64,${fileBuffer.toString('base64')}`;
+    } else {
+      console.warn(`Local image not found: ${filePath}`);
+    }
+  } catch (err) {
+    // node:fs not available or file error; ignore and leave path as-is
+    if (err.code !== 'ERR_MODULE_NOT_FOUND' && err.code !== 'MODULE_NOT_FOUND') {
+      console.warn('Could not load local image (fs not available or error):', err);
+    }
+  }
+
+  return image;
+}
+
+/**
+ * Convert ArrayBuffer to Base64 string.
+ * Tries to use Node.js Buffer if available, falls back to btoa.
+ * @param {ArrayBuffer} buffer
+ * @returns {Promise<string>}
+ */
+async function arrayBufferToBase64(buffer) {
+  try {
+    // Dynamically import Buffer to avoid hard dependency
+    const { Buffer } = await import('node:buffer');
+    return Buffer.from(buffer).toString('base64');
+  } catch (e) {
+    // Fallback for environments without node:buffer
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    // btoa is available in modern browsers and Node.js >= 16
+    return btoa(binary);
+  }
 }
