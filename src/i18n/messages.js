@@ -3,8 +3,6 @@
  *   Interface for getting messages from our Fluent translations files.
  */
 
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import { FluentBundle, FluentResource } from '@fluent/bundle';
 import { negotiateLanguages } from '@fluent/langneg';
 
@@ -13,7 +11,12 @@ import { negotiateLanguages } from '@fluent/langneg';
  * @typedef {string} MessageKey
  */
 
-const LOCALES_DIR = path.join(import.meta.dirname, 'locales')
+// Load all locale files at build time
+const localeFiles = import.meta.glob('./locales/*.ftl', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
 
 export class Messages {
 
@@ -38,10 +41,13 @@ export class Messages {
    * @returns Same Messages instances this was invoked on.
    */
   async load() {
-    const files = await fs.readdir(LOCALES_DIR);
-
-    const supportedLocales = files.reduce((acc, val) => {
-      acc[val.split('.')[0]] = val;
+    const supportedLocales = Object.keys(localeFiles).reduce((acc, val) => {
+      // val is like "./locales/en.ftl"
+      const filename = val.split('/').pop(); // "en.ftl"
+      if (filename) {
+        const locale = filename.split('.')[0]; // "en"
+        acc[locale] = val;
+      }
       return acc;
     }, /** @type {Record<string, string>} */({}));
 
@@ -51,16 +57,15 @@ export class Messages {
       { defaultLocale: this.#defaultLocale },
     );
 
-    this.#bundles = await Promise.all(
-      selectedLocales.map(async (selectedLocale) => {
-        const bundle = new FluentBundle(selectedLocale);
-        const localePath = supportedLocales[selectedLocale];
-        const contents = await fs.readFile(path.join(LOCALES_DIR, localePath), 'utf-8');
-        const resource = new FluentResource(contents);
-        bundle.addResource(resource);
-        return bundle;
-      })
-    );
+    this.#bundles = selectedLocales.map((selectedLocale) => {
+      const bundle = new FluentBundle(selectedLocale);
+      const filePath = supportedLocales[selectedLocale];
+      // @ts-ignore - import.meta.glob returns strings with ?raw
+      const contents = localeFiles[filePath];
+      const resource = new FluentResource(contents);
+      bundle.addResource(resource);
+      return bundle;
+    });
 
     return this;
   }

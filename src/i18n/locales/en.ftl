@@ -1,64 +1,31 @@
-title =
-  {$name} - CV
+title = {$name} - CV
 
 # Description of the image associated with the CV. Expected to be the user's
 # face, profile picture, or avatar. You can treat this as equivalent to the
 # avatar or profile picture of a social media profile.
-avatar-description =
-  Avatar of {$name}.
-
-curriculum-vitae =
-  CV
-
-contact =
-  Contact
-
-website =
-  Website
-
-email =
-  Email
-
-phone =
-  Phone
-
-about =
-  About
-
-work-experience =
-  Work Experience
-
+avatar-description = Avatar of {$name}.
+curriculum-vitae = CV
+contact = Contact
+website = Website
+email = Email
+phone = Phone
+about = About
+work-experience = Work Experience
 # When you volunteer to your local animal shelter. So you work for free and
 # support their charitable activities.
-volunteer =
-  Volunteer
-
-projects =
-  Projects
-
-education =
-  Education
-
+volunteer = Volunteer
+projects = Projects
+education = Education
 # Can be treated like the word "thesis", or what is usually the last piece of
 # work required to complete a degree.
-dissertation =
-  Dissertation: {$text}
-
-skills =
-  Skills
-
-languages =
-  Languages
-
-interests =
-  Interests
-
+dissertation = Dissertation: {$text}
+skills = Skills
+languages = Languages
+interests = Interests
 # List of people who would vouch for you. For example, when applying for a job,
 # college, or rent application, they may ask that you provide a list of contacts
 # who can offer a positive testimonial.
-references =
-  References
-
+references = References
 # In English, the dates are written in MMM YYYY format. Node.js will convert it
 # to each locales equivalent on its own.
 #
@@ -76,5 +43,11 @@ references =
 #
 # If it matters to you, please consider the capitalization of the date when
 # deciding how to capitalize the translation of `Present`.
-present =
-  Present
+present = Present
+awards = Awards
+certificates = Certificates
+publications = Publications
+score = Score
+Informatics-Engineer = Informatics Engineer
+english = English
+spanish = Spanish
