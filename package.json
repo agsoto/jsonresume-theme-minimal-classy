@@ -1,8 +1,11 @@
 {
-  "name": "@jsonresume/jsonresume-theme-class",
-  "version": "0.5.1",
-  "description": "Class Theme for JSON Resume",
-  "author": "Seth Falco",
+  "name": "@jsonresume/jsonresume-theme-minimal-classy",
+  "version": "0.0.1",
+  "description": "Minimal Classy Theme for JSON Resume",
+  "author": "agsoto",
+  "contributors": [
+    "Seth Falco"
+  ],
   "license": "MIT",
   "type": "module",
   "keywords": [
@@ -11,11 +14,11 @@
     "handlebars",
     "jsonresume",
     "jsonresume-theme",
-    "jsonresume-theme-class"
+    "jsonresume-theme-minimal-classy"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jsonresume/jsonresume-theme-class"
+    "url": "https://github.com/agsoto/jsonresume-theme-minimal-classy"
   },
   "files": [
     "dist/index.js",
@@ -23,7 +26,7 @@
     "package.json",
     "README.md"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -32,13 +35,16 @@
   },
   "scripts": {
     "build": "vite build",
-    "serve": "npm run build && resume serve --theme . --resume ./test/fixture.resume.json",
+    "dev": "nodemon --watch src --ext js,handlebars,css --exec \"npm run serve\"",
+    "serve": "npm run build && resume serve -s --theme . --resume ./resume.json",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit",
     "generate-preview": "npm run build && node scripts/generate-preview.js",
-    "build:pdf": "npm run build && resume export --theme . --resume ./test/fixture.resume.json resume.pdf",
-    "build:html": "npm run build && resume export --theme . --resume ./test/fixture.resume.json resume.html"
+    "build:pdf": "npm run build && resumed export --theme @jsonresume/jsonresume-theme-minimal-classy",
+    "build:html": "npm run build && resumed render --theme @jsonresume/jsonresume-theme-minimal-classy",
+    "test:build:pdf": "npm run build && resumed export ./test/fixture.resume.json --theme @jsonresume/jsonresume-theme-minimal-classy -o resume.pdf",
+    "test:build:html": "npm run build && resumed render ./test/fixture.resume.json --theme @jsonresume/jsonresume-theme-minimal-classy -o resume.html"
   },
   "engines": {
     "node": ">=v20.11"
@@ -52,13 +58,15 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@jsonresume/jsonresume-theme-minimal-classy": "file:",
     "@types/html-minifier": "^4.0.5",
     "@types/node": "^24.8.1",
     "eslint": "^9.38.0",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^14.0.0",
-    "puppeteer": "^18.2.1",
-    "resume-cli": "^3.1.2",
+    "nodemon": "^3.1.11",
+    "puppeteer": "^24.0.0",
+    "resumed": "^6.1.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   }
