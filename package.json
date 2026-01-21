@@ -1,5 +1,5 @@
 {
-  "name": "@jsonresume/jsonresume-theme-minimal-classy",
+  "name": "jsonresume-theme-minimal-classy",
   "version": "0.0.1",
   "description": "Minimal Classy Theme for JSON Resume",
   "author": "agsoto",
@@ -21,7 +21,7 @@
     "url": "https://github.com/agsoto/jsonresume-theme-minimal-classy"
   },
   "files": [
-    "dist/index.js",
+    "dist",
     "LICENSE",
     "package.json",
     "README.md"
@@ -41,10 +41,11 @@
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit",
     "generate-preview": "npm run build && node scripts/generate-preview.js",
-    "build:pdf": "npm run build && resumed export --theme @jsonresume/jsonresume-theme-minimal-classy",
-    "build:html": "npm run build && resumed render --theme @jsonresume/jsonresume-theme-minimal-classy",
-    "test:build:pdf": "npm run build && resumed export ./test/fixture.resume.json --theme @jsonresume/jsonresume-theme-minimal-classy -o resume.pdf",
-    "test:build:html": "npm run build && resumed render ./test/fixture.resume.json --theme @jsonresume/jsonresume-theme-minimal-classy -o resume.html"
+    "build:pdf": "npm run build && resumed export --theme jsonresume-theme-minimal-classy",
+    "build:html": "npm run build && resumed render --theme jsonresume-theme-minimal-classy",
+    "test:build:pdf": "npm run build && resumed export ./test/fixture.resume.json --theme jsonresume-theme-minimal-classy -o resume.pdf",
+    "test:build:html": "npm run build && resumed render ./test/fixture.resume.json --theme jsonresume-theme-minimal-classy -o resume.html",
+    "prepublishOnly": "npm run build"
   },
   "engines": {
     "node": ">=v20.11"
@@ -58,7 +59,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
-    "@jsonresume/jsonresume-theme-minimal-classy": "file:",
+    "jsonresume-theme-minimal-classy": "file:",
     "@types/html-minifier": "^4.0.5",
     "@types/node": "^24.8.1",
     "eslint": "^9.38.0",
