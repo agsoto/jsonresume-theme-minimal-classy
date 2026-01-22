@@ -305,15 +305,84 @@ section {
 }
 
 /* References */
+.references-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.reference-item {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reference-header {
+  margin-bottom: 5px;
+}
+
+.reference-name {
+  font-weight: 700;
+  font-size: 1.2em;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.reference-title {
+  font-weight: 400;
+  font-size: 0.9em;
+  color: #666;
+  text-transform: none;
+}
+
+.reference-body blockquote {
+  border-left: 4px solid #000;
+  margin: 0;
+  padding-left: 15px;
+  font-style: italic;
+  color: #000;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.reference-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9em;
+  color: #000;
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid #000;
+}
+
+.reference-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reference-contact-item .icon {
+  width: 16px;
+  text-align: center;
+  color: #000;
+}
+
+.reference-contact-item a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.reference-contact-item a:hover {
+  text-decoration: underline;
+}
+
+/* Generic Blockquote (fallback) */
 blockquote {
   margin: 0 0 10px 0;
   font-style: italic;
-}
-
-cite {
-  display: block;
-  text-align: right;
-  font-weight: 700;
 }
 
 /* Mobile Responsiveness */

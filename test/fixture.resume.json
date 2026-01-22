@@ -160,5 +160,18 @@
       "language": "Spanish",
       "fluency": "Professional working proficiency"
     }
+  ],
+  "references": [
+    {
+      "name": "Jane Doe",
+      "reference": "This man knows what he's doing. He's a great developer. I highly recommend him.",
+      "email": "jane.doe@example.com",
+      "phone": "123-456-7890",
+      "url": "https://jane.doe.com/"
+    },
+    {
+      "name": "Jeanine Doe",
+      "reference": "I've worked with this man for years. He's been such a talented developer. I highly recommend him."
+    }
   ]
 }

@@ -55,11 +55,7 @@
         <div class="contact-item">
           <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
           <span class="text">
-            {{#if location.address}}{{location.address}}, {{/if}}
-            {{#if location.postalCode}}{{location.postalCode}}, {{/if}}
-            {{#if location.city}}{{location.city}}{{/if}}
-            {{#if location.region}}, {{location.region}}{{/if}}
-            {{#if location.countryCode}}, {{location.countryCode}}{{/if}}
+            {{formatLocation location}}
           </span>
         </div>
         {{/if}}
@@ -365,22 +361,53 @@
     {{#if resume.references.length}}
     <section id="references">
       <h3 class="section-title">{{i18n "references"}}</h3>
+      <div class="references-wrapper">
       {{#each resume.references}}
-      <div class="job-item">
-        <div class="job-content">
-          <div class="job-summary">
-            {{#if reference}}
+      <div class="reference-item">
+        {{#if name}}
+        <div class="reference-header">
+            <div class="reference-name">{{name}}</div>
+            {{#if position}}
+            <div class="reference-title">
+              {{position}}{{#if company}}, {{company}}{{/if}}
+            </div>
+            {{/if}}
+        </div>
+        {{/if}}
+        
+        {{#if reference}}
+        <div class="reference-body">
             <blockquote>
               {{reference}}
             </blockquote>
-            {{/if}}
-            {{#if name}}
-            <cite>— {{name}}</cite>
-            {{/if}}
-          </div>
         </div>
+        {{/if}}
+
+        {{#if hasFooter}}
+        <div class="reference-footer">
+            {{#if email}}
+            <div class="reference-contact-item">
+              <span class="icon"><i class="fas fa-envelope"></i></span>
+              <span class="text"><a href="mailto:{{email}}">{{email}}</a></span>
+            </div>
+            {{/if}}
+            {{#if phone}}
+            <div class="reference-contact-item">
+              <span class="icon"><i class="fas fa-phone"></i></span>
+              <span class="text"><a href="tel:{{phone}}">{{phone}}</a></span>
+            </div>
+            {{/if}}
+            {{#if url}}
+            <div class="reference-contact-item">
+              <span class="icon"><i class="fas fa-globe"></i></span>
+              <span class="text"><a href="{{url}}" target="_blank">{{url}}</a></span>
+            </div>
+            {{/if}}
+        </div>
+        {{/if}}
       </div>
       {{/each}}
+      </div>
     </section>
     {{/if}}
 

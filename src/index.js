@@ -37,6 +37,26 @@ Handlebars.registerHelper('link', /** @param {string} body */(body) => {
   return `<a href="${body}">${host}</a>`;
 });
 
+Handlebars.registerHelper('formatLocation', /** @param {object} location */ (location) => {
+  if (!location) {
+    return '';
+  }
+
+  const parts = [
+    location.address,
+    location.postalCode,
+    location.city,
+    location.region,
+    location.countryCode
+  ].filter(Boolean);
+
+  if (parts.length === 0) {
+    return '';
+  }
+
+  return parts.join(', ');
+});
+
 
 /**
  * @param {any} resume
@@ -78,6 +98,11 @@ export async function render(resume) {
     resume.meta.logo = await resolveImage(resume.meta.logo, resume.meta?.selfContainedImages);
   }
   
+  if (resume.references) {
+    resume.references.forEach(ref => {
+      ref.hasFooter = !!(ref.email || ref.phone || ref.url);
+    });
+  }
 
   const html = Handlebars.compile(template)({
     css,

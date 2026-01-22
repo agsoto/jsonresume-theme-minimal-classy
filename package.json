@@ -36,7 +36,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "nodemon --watch src --ext js,handlebars,css --exec \"npm run serve\"",
-    "serve": "npm run build && resume serve -s --theme . --resume ./resume.json",
+    "serve": "npm run build && resumed serve -s --theme . --resume ./resume.json",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit",
