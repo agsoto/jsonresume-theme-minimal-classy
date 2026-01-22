@@ -56,9 +56,14 @@ You can configure the theme by adding a `meta` object to your `resume.json`. The
 
 This supports the JSON Resume 1.0.0 spec.
 
-<!-- ### Application Tracking System (ATS) Friendly
+### Highly Configurable
 
-Many companies and recruiters use [ATS](https://wikipedia.org/wiki/Applicant_tracking_system) systems that [parse CVs](https://wikipedia.org/wiki/R%C3%A9sum%C3%A9_parsing) and extract the information into a standard format. We review some of these tools and adhere to standard practices while building the theme. -->
+This theme offers extensive configuration options via the `meta` object, allowing you to:
+- Toggle image styling (circle mask, grayscale)
+- Hide the name if included in a logo
+- Position the label/title
+- Inject custom CSS for fine-grained control
+- Embed remote images for offline usage
 
 ### Markdown
 
@@ -66,6 +71,10 @@ You can use Markdown in the following properties to make text bold, italic, or l
 
 - `summary`
 - `highlights`
+
+### Extended References
+
+You can add contact details to your references. This theme supports `email`, `phone`, and `url` fields in the `references` objects. You can see [fixture.resume.json](https://github.com/agsoto/jsonresume-theme-minimal-classy/blob/main/test/fixture.resume.json) for reference.
 
 ### Localized
 
