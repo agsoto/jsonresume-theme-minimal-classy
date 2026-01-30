@@ -424,9 +424,19 @@ blockquote {
 }
 
 /* Print styles */
+
 @media print {
+  @page { size: A4; margin: 12mm; }
+
+  body { margin: 0 !important; padding: 0; font-size: 12px; line-height: initial; }
+
+  h2, h3 { 
+    break-after: avoid; 
+    page-break-after: avoid; 
+  }
+
+
   body {
-    padding: 0;
     /* Ensure background graphics are printed if possible, though browser dependent */
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -437,7 +447,7 @@ blockquote {
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
   }
 
   .header-row {
@@ -472,11 +482,9 @@ blockquote {
     print-color-adjust: exact !important;
   }
   
-  .job-item {
-    break-inside: avoid;
-  }
+  
 
-  .skill-item,
+  ul, .skill-item,
   .interest-item,
   .language-item {
     break-inside: avoid;

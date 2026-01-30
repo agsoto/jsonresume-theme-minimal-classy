@@ -7,9 +7,9 @@ import template from './resume.handlebars?raw';
 import css from './style.css?raw';
 
 /** @type {Intl.DateTimeFormatOptions} */
-const LONG_DATE_FORMAT = { month: 'short', year: 'numeric' };
+const LONG_DATE_FORMAT = { month: 'short', year: 'numeric', timeZone: 'UTC' };
 /** @type {Intl.DateTimeFormatOptions} */
-const SHORT_DATE_FORMAT = { year: 'numeric' };
+const SHORT_DATE_FORMAT = { year: 'numeric', timeZone: 'UTC' };
 
 
 
